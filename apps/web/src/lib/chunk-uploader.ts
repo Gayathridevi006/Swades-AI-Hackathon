@@ -1,4 +1,4 @@
-import { opfs, type ChunkMeta } from "./opfs";
+import { opfs, type ChunkMeta } from "./opfs.client";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_SERVER_URL ??

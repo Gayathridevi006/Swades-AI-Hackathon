@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { opfs, type ChunkMeta } from "@/lib/opfs";
+import { opfs, type ChunkMeta } from "@/lib/opfs.client";
 import { uploader, type UploadResult } from "@/lib/chunk-uploader";
 
 export type TranscripterStatus =
