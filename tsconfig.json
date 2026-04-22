@@ -1,6 +1,7 @@
 {
   "extends": "@my-better-t-app/config/tsconfig.base.json",
   "compilerOptions": {
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "ignoreDeprecations": "5.0"
   }
 }
