@@ -1,13 +1,18 @@
-FROM oven/bun:1.1.0
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY . .
+# Copy only package files first (better caching)
+COPY package.json package-lock.json ./
 
-RUN bun install
+# Copy workspace packages
+COPY apps ./apps
+COPY packages ./packages
+
+RUN npm install
 
 WORKDIR /app/apps/server
 
 EXPOSE 3000
 
-CMD ["bun", "run", "src/index.ts"]
+CMD ["npm", "run", "dev"]
