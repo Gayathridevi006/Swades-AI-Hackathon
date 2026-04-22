@@ -1,8 +1,8 @@
 const ROOT_DIR = "transcripter-chunks";
 
 async function getRoot(): Promise<FileSystemDirectoryHandle> {
-  if (typeof navigator === "undefined" || !("storage" in navigator)) {
-    throw new Error("OPFS is not available in this environment");
+  if (typeof window === "undefined" || !("storage" in navigator)) {
+    throw new Error("OPFS only available in browser");
   }
   const root = await navigator.storage.getDirectory();
   return root.getDirectoryHandle(ROOT_DIR, { create: true });
@@ -123,11 +123,28 @@ export const opfs = {
   },
 
   async listSessions(): Promise<string[]> {
+  // ✅ Prevent execution during SSR / build
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
     const root = await getRoot();
     const ids: string[] = [];
-    for await (const [name, handle] of root.entries()) {
-      if (handle.kind === "directory") ids.push(name);
+
+    // ✅ Safe iteration
+    for await (const entry of root.entries()) {
+      const [name, handle] = entry;
+
+      if (handle.kind === "directory") {
+        ids.push(name);
+      }
     }
+
     return ids;
-  },
+  } catch (err) {
+    console.error("Failed to list sessions:", err);
+    return [];
+  }
+},
 };
