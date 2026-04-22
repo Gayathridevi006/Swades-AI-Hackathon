@@ -133,9 +133,7 @@ export const opfs = {
     const ids: string[] = [];
 
     // ✅ Safe iteration
-    for await (const entry of root.entries()) {
-      const [name, handle] = entry;
-
+    for await (const [name, handle] of (root as any).entries()) {
       if (handle.kind === "directory") {
         ids.push(name);
       }
